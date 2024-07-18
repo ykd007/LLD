@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Configuration>
+<Configuration monitorInterval="60">
 
 	<Properties>
 		<!-- Global pattern layout for log messages -->
-		<Property name="appenderPatternLayout">%d{YYYY-MM-dd HH:mm:ss.SSS} [%t]
-			%-5p %logger{64}.%M : %msg%n</Property>
+		<Property name="logPattern">%d{YYYY-MM-dd HH:mm:ss.SSS} [%t]%-5p %logger{64}.%M : %msg%n</Property>
+		<Property name="filePath">Logs</Property>
+		<Property name="fileName">chess.log</Property>
 	</Properties>
 
 	<Appenders>
 
 		<Console name="STDOUT" target="SYSTEM_OUT"
 			ignoreExceptions="false">
-			<PatternLayout pattern="${appenderPatternLayout}" />
+			<PatternLayout pattern="${logPattern}" />
 		</Console>
 
-		<RollingFile name="RollingFile" filename="logs/chess.log">
+		<RollingFile name="RollingFile" filename="${filePath}/${fileName}" filePattern="${fileName}" append="false">
 
-			<PatternLayout pattern="${appenderPatternLayout}" />
+			<PatternLayout pattern="${logPattern}" />
 
 			<Policies>
 				<SizeBasedTriggeringPolicy size="10 MB" />
@@ -31,15 +32,15 @@
 
 	<Loggers>
 	
-		<Root level="OFF" additivity="false">
-			<AppenderRef ref="STDOUT" />
-			<AppenderRef ref="RollingFile" />
-		</Root>
-		
-		<Logger name="lld.chess" level="OFF" additivity="false">
+		<Logger name="lld" level="trace" additivity="false">
 			<AppenderRef ref="STDOUT" />
 			<AppenderRef ref="RollingFile" />
 		</Logger>
+		
+		<Root level="error" additivity="true">
+			<AppenderRef ref="STDOUT" />
+			<AppenderRef ref="RollingFile" />
+		</Root>
 		
 	</Loggers>	
 
